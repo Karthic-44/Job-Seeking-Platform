@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -16,16 +19,15 @@ public class Recruiter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recruiter_id")
     private Long recruiterId;
-
-    @Column(name = "organization_name")
     private String organizationName;
-
-    @Column(name = "location")
     private String location;
 
-    @OneToOne(mappedBy = "user")
-    //@JoinColumn(name = "user_id")
-    private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
+    @OneToMany(mappedBy = "recruiter")
+    private List<Job> job = new ArrayList<>();
 
 
 

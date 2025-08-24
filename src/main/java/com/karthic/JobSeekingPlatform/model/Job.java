@@ -5,27 +5,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Experience")
-public class Experience {
+@Table(name = "Job")
+public class Job {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  int experienceId;
+    @Column(name = "job_id")
+    private int jobId;
 
-
-    private String organizationName;
-    private Date startDate;
-    private Date endDate;
     private String role;
+    private String requiredSkill;
+    private String requiredQualifications;
+    private String description;
 
     @ManyToOne
+    @JoinColumn(name = "recruiter_id")
+    private Recruiter recruiter;
+
+    @OneToOne
     @JoinColumn(name = "user_id")
     private Users user;
+
 }

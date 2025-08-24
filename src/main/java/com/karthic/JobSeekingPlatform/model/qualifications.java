@@ -17,18 +17,14 @@ public class qualifications {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qualification_id")
-    private int id;
+    private int qualificationId;
 
-    @Column(name = "degree")
+
     private String degree;
-
-    @Column(name = "start_date")
     private Date startDate;
-
-    @Column(name = "end_date")
     private Date endDate;
 
     @ManyToOne
     @JoinColumn(name ="user_id")
-    private User user;
+    private Users user;
 }

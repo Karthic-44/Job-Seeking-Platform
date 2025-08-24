@@ -8,52 +8,48 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "User")
-public class User {
+@Table(name = "Users")
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
-
     @NotBlank
     @Size(max=50)
-    @Column(name = "username")
     private String userName;
-
     @NotBlank
     @Size(max=128)
-    @Column(name = "password")
     private String password;
-
     @NotBlank
     @Size(max=50)
     @Email
-    @Column(name = "email")
     private String email;
-
     @NotBlank
     @Size(max=10)
-    @Column(name = "phone")
     private Integer userPhoneNumber;
 
     @OneToMany(mappedBy = "user")
-    private List<Skill> skill;
+    private List<Skill> skill = new ArrayList<>() ;
 
     @OneToMany(mappedBy = "user")
-    private List<qualifications> qualification;
+    private List<qualifications> qualification = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Experience> experience;
+    private List<Experience> experience = new ArrayList<>();
 
     @OneToOne(mappedBy = "user")
-    //@JoinColumn(name = "user_id")
     private Recruiter recruiter;
+
+   @OneToOne(mappedBy = "user")
+   private Job job;
+
 
 }
