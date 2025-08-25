@@ -40,7 +40,7 @@ public class Users {
     private List<Skill> skill = new ArrayList<>() ;
 
     @OneToMany(mappedBy = "user")
-    private List<qualifications> qualification = new ArrayList<>();
+    private List<Qualifications> qualification = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Experience> experience = new ArrayList<>();
