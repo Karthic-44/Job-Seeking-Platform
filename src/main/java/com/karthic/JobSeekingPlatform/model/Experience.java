@@ -17,7 +17,7 @@ public class Experience {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  int experienceId;
+    private  Integer experienceId;
 
 
     private String organizationName;
