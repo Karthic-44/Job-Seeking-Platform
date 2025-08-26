@@ -17,7 +17,7 @@ public class Qualifications {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qualification_id")
-    private int qualificationId;
+    private Integer qualificationId;
 
 
     private String degree;
