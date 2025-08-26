@@ -15,7 +15,7 @@ public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "job_id")
-    private int jobId;
+    private Integer jobId;
 
     private String role;
     private String requiredSkill;
