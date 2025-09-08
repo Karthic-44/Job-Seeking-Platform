@@ -1,6 +1,8 @@
 package com.karthic.JobSeekingPlatform.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +19,10 @@ public class Job {
     @Column(name = "job_id")
     private Long jobId;
 
+    @NotBlank
+    @Size(min=5, message = "Name must contain atleast 5 characters  ")
+    private String jobName;
+
     private String role;
     private String requiredSkill;
     private String requiredQualifications;
@@ -29,5 +35,7 @@ public class Job {
     @OneToOne
     @JoinColumn(name = "user_id")
     private Users user;
+
+
 
 }
