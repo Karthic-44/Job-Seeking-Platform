@@ -37,4 +37,22 @@ public class JobPostingServiceImpl implements JobPostingService{
         jobRepository.delete(job);
         return modelMapper.map(job,JobDTO.class);
     }
+
+    @Override
+    public JobDTO updateJob(Long jobId, JobDTO jobDTO) {
+        Job jobFromDb = jobRepository.findById(jobId)
+                .orElseThrow(() -> new ResourceNotFoundException("Job", "jobId", jobId));
+
+        Job job = modelMapper.map(jobDTO, Job.class);
+
+        jobFromDb.setJobName(job.getJobName());
+        jobFromDb.setRole(job.getRole());
+        jobFromDb.setRequiredSkill(job.getRequiredSkill());
+        jobFromDb.setRequiredQualifications(job.getRequiredQualifications());
+        jobFromDb.setDescription(job.getDescription());
+
+
+        Job savedJob = jobRepository.save(jobFromDb);
+
+        return modelMapper.map(savedJob, JobDTO.class);    }
 }

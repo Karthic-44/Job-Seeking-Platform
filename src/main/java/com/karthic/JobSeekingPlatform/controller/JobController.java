@@ -31,4 +31,12 @@ public class JobController {
         return new ResponseEntity<>(deleteJob, HttpStatus.OK);
     }
 
+    @PutMapping("/admin/job/{jobId}")
+    public ResponseEntity<JobDTO> updateJob(@Valid @RequestBody JobDTO jobDTO,
+                                                    @PathVariable Long jobId){
+
+        JobDTO updatedJobDTO = jobPostingService.updateJob(jobId,jobDTO);
+        return new ResponseEntity<>(updatedJobDTO,HttpStatus.OK);
+    }
+
 }
