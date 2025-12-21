@@ -99,4 +99,32 @@ public class JobPostingServiceImpl implements JobPostingService{
         jobResponse.setTotalPages(pageJobs.getTotalPages());
         jobResponse.setLastPage(pageJobs.isLast());
         return jobResponse;    }
+
+    @Override
+    public JobResponse searchJobByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+        Page<Job> pageJobs = jobRepository.findByJobNameLikeIgnoreCase('%' + keyword + '%', pageDetails);
+
+        List<Job> jobs = pageJobs.getContent();
+        List<JobDTO> jobDTOS = jobs.stream()
+                .map(job -> modelMapper.map(job, JobDTO.class))
+                .toList();
+
+        if(jobs.isEmpty()){
+            throw new APIException("Jobs not found with keyword: " + keyword);
+        }
+
+        JobResponse jobResponse = new JobResponse();
+        jobResponse.setContent(jobDTOS);
+        jobResponse.setPageNumber(pageJobs.getNumber());
+        jobResponse.setPageSize(pageJobs.getSize());
+        jobResponse.setTotalElements(pageJobs.getTotalElements());
+        jobResponse.setTotalPages(pageJobs.getTotalPages());
+        jobResponse.setLastPage(pageJobs.isLast());
+        return jobResponse;
+    }
 }

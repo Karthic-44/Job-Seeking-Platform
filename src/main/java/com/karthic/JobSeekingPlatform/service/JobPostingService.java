@@ -13,4 +13,6 @@ public interface JobPostingService {
 
 
     JobResponse getAllJobs(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword);
+
+    JobResponse searchJobByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 }

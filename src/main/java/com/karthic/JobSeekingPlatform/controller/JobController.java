@@ -32,6 +32,17 @@ public class JobController {
         return new ResponseEntity<>(jobResponse,HttpStatus.OK);
     }
 
+    @GetMapping("/public/jobs/keyword/{keyword}")
+    public ResponseEntity<JobResponse> getJobsByKeyword(@PathVariable String keyword,
+                                                                @RequestParam(name = "pageNumber", defaultValue= AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                                @RequestParam(name="pageSize", defaultValue= AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+                                                                @RequestParam(name="sortBy", defaultValue= AppConstants.SORT_JOB_BY,required = false) String sortBy,
+                                                                @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
+
+        JobResponse jobResponse = jobPostingService.searchJobByKeyword(keyword,pageNumber,pageSize,sortBy,sortOrder);
+        return new ResponseEntity<>(jobResponse,HttpStatus.FOUND);
+    }
+
     @PostMapping("/public/job")
     public ResponseEntity<JobDTO> CreateCategories(@Valid @RequestBody JobDTO jobDTO) {
 
