@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JobDTO {
 
-    private Integer jobId;
+    private String jobName;
     private String role;
     private String requiredSkill;
     private String requiredQualifications;
