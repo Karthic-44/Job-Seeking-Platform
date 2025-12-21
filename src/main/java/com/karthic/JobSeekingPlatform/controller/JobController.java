@@ -1,6 +1,8 @@
 package com.karthic.JobSeekingPlatform.controller;
 
+import com.karthic.JobSeekingPlatform.config.AppConstants;
 import com.karthic.JobSeekingPlatform.payload.JobDTO;
+import com.karthic.JobSeekingPlatform.payload.JobResponse;
 import com.karthic.JobSeekingPlatform.service.JobPostingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,19 @@ public class JobController {
     @Autowired
     private JobPostingService jobPostingService;
 
+
+    @GetMapping("/public/jobs")
+    public ResponseEntity<JobResponse> getAllJobs(
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "category", required = false) String category,
+            @RequestParam(name = "pageNumber", defaultValue= AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+            @RequestParam(name="pageSize", defaultValue= AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+            @RequestParam(name="sortBy", defaultValue= AppConstants.SORT_JOB_BY,required = false) String sortBy,
+            @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder
+    ){
+        JobResponse jobResponse = jobPostingService.getAllJobs(pageNumber,pageSize,sortBy,sortOrder, keyword);
+        return new ResponseEntity<>(jobResponse,HttpStatus.OK);
+    }
 
     @PostMapping("/public/job")
     public ResponseEntity<JobDTO> CreateCategories(@Valid @RequestBody JobDTO jobDTO) {

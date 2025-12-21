@@ -4,11 +4,18 @@ import com.karthic.JobSeekingPlatform.Exception.APIException;
 import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Job;
 import com.karthic.JobSeekingPlatform.payload.JobDTO;
+import com.karthic.JobSeekingPlatform.payload.JobResponse;
 import org.modelmapper.ModelMapper;
 import com.karthic.JobSeekingPlatform.repositories.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class JobPostingServiceImpl implements JobPostingService{
@@ -55,4 +62,41 @@ public class JobPostingServiceImpl implements JobPostingService{
         Job savedJob = jobRepository.save(jobFromDb);
 
         return modelMapper.map(savedJob, JobDTO.class);    }
+
+    @Override
+    public JobResponse getAllJobs(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+
+        Specification<Job> spec = Specification.where(null);
+        if (keyword != null && !keyword.isEmpty()){
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("jobName")), "%"  + keyword.toLowerCase() + "%"));
+        }
+
+
+        Page<Job> pageJobs = jobRepository.findAll(spec, pageDetails);
+
+        List<Job> jobs = pageJobs.getContent();
+
+        List<JobDTO> jobDTOS = jobs.stream()
+                .map(job -> {
+                    JobDTO jobDTO = modelMapper.map(job, JobDTO.class);
+
+                    return jobDTO;
+                })
+
+                .toList();
+
+        JobResponse jobResponse = new JobResponse();
+        jobResponse.setContent(jobDTOS);
+        jobResponse.setPageNumber(pageJobs.getNumber());
+        jobResponse.setPageSize(pageJobs.getSize());
+        jobResponse.setTotalElements(pageJobs.getTotalElements());
+        jobResponse.setTotalPages(pageJobs.getTotalPages());
+        jobResponse.setLastPage(pageJobs.isLast());
+        return jobResponse;    }
 }
