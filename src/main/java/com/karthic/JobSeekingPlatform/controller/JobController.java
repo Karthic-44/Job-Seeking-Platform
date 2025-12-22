@@ -20,7 +20,7 @@ public class JobController {
 
 
     @GetMapping("/public/jobs")
-    public ResponseEntity<JobResponse> getAllJobs(
+    public ResponseEntity<JobResponse> getAllRecruiters(
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "category", required = false) String category,
             @RequestParam(name = "pageNumber", defaultValue= AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
