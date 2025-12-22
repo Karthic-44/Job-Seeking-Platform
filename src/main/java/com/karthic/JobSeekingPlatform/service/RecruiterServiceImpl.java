@@ -113,4 +113,21 @@ public class RecruiterServiceImpl implements RecruiterService{
         recruiterResponse.setLastPage(pageRecruiters.isLast());
         return recruiterResponse;
     }
+
+    @Override
+    public RecruiterDTO updateRecruiter(Long recruiterId, RecruiterDTO recruiterDTO) {
+        Recruiter recruiterFromDb = recruiterRepository.findById(recruiterId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recruiter", "recruiterId", recruiterId));
+
+        Recruiter recruiter = modelMapper.map(recruiterDTO, Recruiter.class);
+
+        recruiterFromDb.setRecruiterName(recruiter.getRecruiterName());
+        recruiterFromDb.setEmail(recruiter.getEmail());
+        recruiterFromDb.setPassword(recruiter.getPassword());
+        recruiterFromDb.setLocation(recruiter.getLocation());
+
+        Recruiter savedRecruiter = recruiterRepository.save(recruiterFromDb);
+
+        return modelMapper.map(savedRecruiter, RecruiterDTO.class);
+    }
 }

@@ -12,4 +12,6 @@ public interface RecruiterService {
     RecruiterResponse getAllRecruiters(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword);
 
     RecruiterResponse searchRecruiterByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+
+    RecruiterDTO updateRecruiter(Long recruiterId, @Valid RecruiterDTO recruiterDTO);
 }

@@ -58,5 +58,13 @@ public class RecruiterController {
         return new ResponseEntity<>(recruiterResponse,HttpStatus.FOUND);
     }
 
+    @PutMapping("/admin/recruiter/{recruiterId}")
+    public ResponseEntity<RecruiterDTO> updateRecruiter(@Valid @RequestBody RecruiterDTO recruiterDTO,
+                                            @PathVariable Long recruiterId){
+
+        RecruiterDTO updatedRecruiterDTO = recruiterService.updateRecruiter(recruiterId,recruiterDTO);
+        return new ResponseEntity<>(updatedRecruiterDTO,HttpStatus.OK);
+    }
+
 
 }
