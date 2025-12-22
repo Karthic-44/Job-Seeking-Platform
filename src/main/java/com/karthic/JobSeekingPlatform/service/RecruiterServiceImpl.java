@@ -85,4 +85,32 @@ public class RecruiterServiceImpl implements RecruiterService{
         recruiterResponse.setLastPage(pageRecruiters.isLast());
         return recruiterResponse;
     }
+
+    @Override
+    public RecruiterResponse searchRecruiterByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+        Page<Recruiter> pageRecruiters = recruiterRepository.findByRecruiterNameLikeIgnoreCase('%' + keyword + '%', pageDetails);
+
+        List<Recruiter> recruiters = pageRecruiters.getContent();
+        List<RecruiterDTO> recruiterDTOS = recruiters.stream()
+                .map(recruiter -> modelMapper.map(recruiter, RecruiterDTO.class))
+                .toList();
+
+        if(recruiters.isEmpty()){
+            throw new APIException("Recruiters not found with keyword: " + keyword);
+        }
+
+        RecruiterResponse recruiterResponse = new RecruiterResponse();
+        recruiterResponse.setContent(recruiterDTOS);
+        recruiterResponse.setPageNumber(pageRecruiters.getNumber());
+        recruiterResponse.setPageSize(pageRecruiters.getSize());
+        recruiterResponse.setTotalElements(pageRecruiters.getTotalElements());
+        recruiterResponse.setTotalPages(pageRecruiters.getTotalPages());
+        recruiterResponse.setLastPage(pageRecruiters.isLast());
+        return recruiterResponse;
+    }
 }

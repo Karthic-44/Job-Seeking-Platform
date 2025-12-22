@@ -47,5 +47,16 @@ public class RecruiterController {
         return new ResponseEntity<>(recruiterResponse,HttpStatus.OK);
     }
 
+    @GetMapping("/public/recruiters/keyword/{keyword}")
+    public ResponseEntity<RecruiterResponse> getRecruiterByKeyword(@PathVariable String keyword,
+                                                        @RequestParam(name = "pageNumber", defaultValue= AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                        @RequestParam(name="pageSize", defaultValue= AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+                                                        @RequestParam(name="sortBy", defaultValue= AppConstants.SORT_RECRUITER_BY,required = false) String sortBy,
+                                                        @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
+
+        RecruiterResponse recruiterResponse = recruiterService.searchRecruiterByKeyword(keyword,pageNumber,pageSize,sortBy,sortOrder);
+        return new ResponseEntity<>(recruiterResponse,HttpStatus.FOUND);
+    }
+
 
 }

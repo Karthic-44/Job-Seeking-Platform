@@ -10,4 +10,6 @@ public interface RecruiterRepository extends JpaRepository<Recruiter,Long> {
     Recruiter findByRecruiterName(String recruiterName);
 
     Page<Recruiter> findAll(Specification<Recruiter> spec, Pageable pageDetails);
+
+    Page<Recruiter> findByRecruiterNameLikeIgnoreCase(String s, Pageable pageDetails);
 }

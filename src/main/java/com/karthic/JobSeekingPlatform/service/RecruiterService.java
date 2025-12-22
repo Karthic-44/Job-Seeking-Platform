@@ -10,4 +10,6 @@ public interface RecruiterService {
     RecruiterDTO deleteRecruiter(Long recruiterId);
 
     RecruiterResponse getAllRecruiters(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword);
+
+    RecruiterResponse searchRecruiterByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 }
