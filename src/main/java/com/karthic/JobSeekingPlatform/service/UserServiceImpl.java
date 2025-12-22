@@ -100,5 +100,22 @@ public class UserServiceImpl implements UserService{
         return usersResponse;
     }
 
+    @Override
+    public UsersDTO updateUsers(Long userId, UsersDTO usersDTO) {
+        Users usersFromDb = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Users", "userId", userId));
+
+        Users users = modelMapper.map(usersDTO, Users.class);
+
+        usersFromDb.setUserName(users.getUserName());
+        usersFromDb.setEmail(users.getEmail());
+        usersFromDb.setPassword(users.getPassword());
+        usersFromDb.setUserPhoneNumber(users.getUserPhoneNumber());
+
+        Users savedUsers = userRepository.save(usersFromDb);
+
+        return modelMapper.map(savedUsers, UsersDTO.class);
+    }
+
 
 }

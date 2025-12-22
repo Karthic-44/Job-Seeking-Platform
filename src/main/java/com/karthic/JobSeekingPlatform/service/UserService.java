@@ -12,4 +12,6 @@ public interface UserService {
       UserResponse searchUsersByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
       UserResponse searchUsersById(Long userId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+
+      UsersDTO updateUsers(Long userId, @Valid UsersDTO usersDTO);
 }

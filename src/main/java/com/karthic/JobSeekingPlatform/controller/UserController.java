@@ -57,13 +57,15 @@ import com.karthic.JobSeekingPlatform.service.UserService;
         return new ResponseEntity<>(userResponse,HttpStatus.FOUND);
     }
 
-//        @GetMapping("/{id}")
-//        public APIResponse getUserById(@PathVariable Long id) { }
-//
-//        @PutMapping("/{id}")
-//        public APIResponse updateUser(@PathVariable Long id,
-//                                      @RequestBody UsersDTO usersDTO) { }
-//
+    @PutMapping("/admin/users/{userId}")
+    public ResponseEntity<UsersDTO> updateUsers(@Valid @RequestBody UsersDTO usersDTO,
+                                                    @PathVariable Long userId){
+
+        UsersDTO updatedUsersDTO = userService.updateUsers(userId,usersDTO);
+        return new ResponseEntity<>(updatedUsersDTO,HttpStatus.OK);
+    }
+
+
 
     }
 
