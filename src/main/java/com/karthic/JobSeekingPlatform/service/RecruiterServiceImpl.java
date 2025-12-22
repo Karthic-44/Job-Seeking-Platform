@@ -1,7 +1,9 @@
 package com.karthic.JobSeekingPlatform.service;
 
+import com.karthic.JobSeekingPlatform.Exception.APIException;
+import com.karthic.JobSeekingPlatform.model.Recruiter;
+import com.karthic.JobSeekingPlatform.payload.RecruiterDTO;
 import com.karthic.JobSeekingPlatform.repositories.RecruiterRepository;
-import com.karthic.JobSeekingPlatform.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,4 +17,14 @@ public class RecruiterServiceImpl implements RecruiterService{
     @Autowired
     private RecruiterRepository recruiterRepository;
 
+    @Override
+    public RecruiterDTO createRecruiter(RecruiterDTO recruiterDTO) {
+        Recruiter recruiter = modelMapper.map(recruiterDTO,Recruiter.class);
+        Recruiter recruiterDb = recruiterRepository.findByRecruiterName(recruiter.getRecruiterName());
+        if (recruiterDb!=null){
+            throw new APIException("Recruiter "+ recruiter.getRecruiterName() + " already exists");
+        }
+        Recruiter savedUser = recruiterRepository.save(recruiter);
+        return  modelMapper.map(savedUser, RecruiterDTO.class);
+    }
 }

@@ -19,8 +19,11 @@ public class Recruiter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recruiter_id")
     private Long recruiterId;
-    private String organizationName;
+    private String recruiterName;
+    private String email;
+    private String password;
     private String location;
+
 
     @OneToOne
     @JoinColumn(name = "user_id")

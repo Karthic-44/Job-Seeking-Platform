@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 public class RecruiterDTO {
 
     private Long recruiterId;
-    private String organizationName;
+    private String recruiterName;
+    private String email;
+    private String password;
     private String location;
 }
