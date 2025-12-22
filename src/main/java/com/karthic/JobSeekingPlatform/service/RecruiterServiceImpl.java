@@ -1,6 +1,7 @@
 package com.karthic.JobSeekingPlatform.service;
 
 import com.karthic.JobSeekingPlatform.Exception.APIException;
+import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Recruiter;
 import com.karthic.JobSeekingPlatform.payload.RecruiterDTO;
 import com.karthic.JobSeekingPlatform.repositories.RecruiterRepository;
@@ -26,5 +27,13 @@ public class RecruiterServiceImpl implements RecruiterService{
         }
         Recruiter savedUser = recruiterRepository.save(recruiter);
         return  modelMapper.map(savedUser, RecruiterDTO.class);
+    }
+
+    @Override
+    public RecruiterDTO deleteRecruiter(Long recruiterId) {
+        Recruiter recruiter = recruiterRepository.findById(recruiterId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recruiter","recruiterId",recruiterId) );
+        recruiterRepository.delete(recruiter);
+        return modelMapper.map(recruiter, RecruiterDTO.class);
     }
 }

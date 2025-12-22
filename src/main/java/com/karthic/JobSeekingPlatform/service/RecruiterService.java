@@ -5,4 +5,6 @@ import jakarta.validation.Valid;
 
 public interface RecruiterService {
     RecruiterDTO createRecruiter(@Valid RecruiterDTO recruiterDTO);
+
+    RecruiterDTO deleteRecruiter(Long recruiterId);
 }
