@@ -20,12 +20,18 @@ import com.karthic.JobSeekingPlatform.service.UserService;
     private UserService userService;
 
     @PostMapping("/users/create")
-        public ResponseEntity<UsersDTO> createUser(@Valid  @RequestBody UsersDTO userDTO) {
+    public ResponseEntity<UsersDTO> createUser(@Valid  @RequestBody UsersDTO userDTO) {
 
-            UsersDTO savedUserDTO = userService.createUser(userDTO);
-            return new ResponseEntity<>(savedUserDTO, HttpStatus.CREATED);
+        UsersDTO savedUserDTO = userService.createUser(userDTO);
+        return new ResponseEntity<>(savedUserDTO, HttpStatus.CREATED);
 
-        }
+    }
+    @DeleteMapping("/admin/users/{userId}")
+    public ResponseEntity<UsersDTO> deleteUsers(@PathVariable Long userId){
+        UsersDTO deletedUsers = userService.deleteUsers(userId);
+        return new ResponseEntity<>(deletedUsers,HttpStatus.OK);
+
+    }    
 
 //        @GetMapping("/{id}")
 //        public APIResponse getUserById(@PathVariable Long id) { }

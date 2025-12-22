@@ -1,6 +1,7 @@
 package com.karthic.JobSeekingPlatform.service;
 
 import com.karthic.JobSeekingPlatform.Exception.APIException;
+import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Users;
 import com.karthic.JobSeekingPlatform.payload.UsersDTO;
 import com.karthic.JobSeekingPlatform.repositories.JobRepository;
@@ -27,5 +28,13 @@ public class UserServiceImpl implements UserService{
         }
         Users savedUser = userRepository.save(user);
         return  modelMapper.map(savedUser, UsersDTO.class);
+    }
+
+    @Override
+    public UsersDTO deleteUsers(Long userId) {
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Users", "userId", userId));
+        userRepository.delete(user);
+        return modelMapper.map(user, UsersDTO.class);
     }
 }
