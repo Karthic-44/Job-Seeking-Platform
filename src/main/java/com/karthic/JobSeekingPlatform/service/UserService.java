@@ -1,4 +1,10 @@
 package com.karthic.JobSeekingPlatform.service;
 
-public class UserService {
+import com.karthic.JobSeekingPlatform.payload.JobDTO;
+import com.karthic.JobSeekingPlatform.payload.UsersDTO;
+import jakarta.validation.Valid;
+
+public interface UserService {
+      UsersDTO createUser(@Valid UsersDTO userDTO);
+
 }

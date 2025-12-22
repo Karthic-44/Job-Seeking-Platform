@@ -44,14 +44,14 @@ public class JobController {
     }
 
     @PostMapping("/public/job")
-    public ResponseEntity<JobDTO> CreateCategories(@Valid @RequestBody JobDTO jobDTO) {
+    public ResponseEntity<JobDTO> CreateJob(@Valid @RequestBody JobDTO jobDTO) {
 
         JobDTO savedJobDTO = jobPostingService.createJob(jobDTO);
         return new ResponseEntity<>(savedJobDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/admin/job/{jobId}")
-    public ResponseEntity<JobDTO> deleteCategory(@PathVariable Long jobId){
+    public ResponseEntity<JobDTO> deleteJob(@PathVariable Long jobId){
 
         JobDTO deleteJob = jobPostingService.deleteJob(jobId);
         return new ResponseEntity<>(deleteJob, HttpStatus.OK);

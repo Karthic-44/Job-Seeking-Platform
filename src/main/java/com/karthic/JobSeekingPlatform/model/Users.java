@@ -22,18 +22,13 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
-    @NotBlank
-    @Size(max=50)
+
     private String userName;
-    @NotBlank
-    @Size(max=128)
+
     private String password;
-    @NotBlank
-    @Size(max=50)
-    @Email
+
     private String email;
-    @NotBlank
-    @Size(max=10)
+
     private Integer userPhoneNumber;
 
     @OneToMany(mappedBy = "user")

@@ -1,22 +1,28 @@
 package com.karthic.JobSeekingPlatform.controller;
 
+import com.karthic.JobSeekingPlatform.model.Users;
 import com.karthic.JobSeekingPlatform.payload.APIResponse;
 import com.karthic.JobSeekingPlatform.payload.JobDTO;
-import com.karthic.JobSeekingPlatform.payload.UserDTO;
+import com.karthic.JobSeekingPlatform.payload.UsersDTO;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.karthic.JobSeekingPlatform.service.UserService;
 
 @RestController
 @RequestMapping("/api")
 
     public class UserController {
 
-        @PostMapping("/users/create")
-        public APIResponse createUser(@Valid  @RequestBody UserDTO userDTO) {
+    @Autowired
+    private UserService userService;
 
-            JobDTO savedUserDTO = userService.createJob(userDTO);
+    @PostMapping("/users/create")
+        public ResponseEntity<UsersDTO> createUser(@Valid  @RequestBody UsersDTO userDTO) {
+
+            UsersDTO savedUserDTO = userService.createUser(userDTO);
             return new ResponseEntity<>(savedUserDTO, HttpStatus.CREATED);
 
         }
