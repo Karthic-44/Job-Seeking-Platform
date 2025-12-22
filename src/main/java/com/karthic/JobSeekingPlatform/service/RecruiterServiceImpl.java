@@ -2,12 +2,23 @@ package com.karthic.JobSeekingPlatform.service;
 
 import com.karthic.JobSeekingPlatform.Exception.APIException;
 import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
+import com.karthic.JobSeekingPlatform.model.Job;
 import com.karthic.JobSeekingPlatform.model.Recruiter;
+import com.karthic.JobSeekingPlatform.payload.JobDTO;
+import com.karthic.JobSeekingPlatform.payload.JobResponse;
 import com.karthic.JobSeekingPlatform.payload.RecruiterDTO;
+import com.karthic.JobSeekingPlatform.payload.RecruiterResponse;
 import com.karthic.JobSeekingPlatform.repositories.RecruiterRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RecruiterServiceImpl implements RecruiterService{
@@ -35,5 +46,43 @@ public class RecruiterServiceImpl implements RecruiterService{
                 .orElseThrow(() -> new ResourceNotFoundException("Recruiter","recruiterId",recruiterId) );
         recruiterRepository.delete(recruiter);
         return modelMapper.map(recruiter, RecruiterDTO.class);
+    }
+
+    @Override
+    public RecruiterResponse getAllRecruiters(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+
+        Specification<Recruiter> spec = Specification.where(null);
+        if (keyword != null && !keyword.isEmpty()){
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("recruiterName")), "%"  + keyword.toLowerCase() + "%"));
+        }
+
+
+        Page<Recruiter> pageRecruiters = recruiterRepository.findAll(spec, pageDetails);
+
+        List<Recruiter> recruiters = pageRecruiters.getContent();
+
+        List<RecruiterDTO> recruiterDTOS = recruiters.stream()
+                .map(recruiter -> {
+                    RecruiterDTO recruiterDTO = modelMapper.map(recruiter, RecruiterDTO.class);
+
+                    return recruiterDTO;
+                })
+
+                .toList();
+
+        RecruiterResponse recruiterResponse = new RecruiterResponse();
+        recruiterResponse.setContent(recruiterDTOS);
+        recruiterResponse.setPageNumber(pageRecruiters.getNumber());
+        recruiterResponse.setPageSize(pageRecruiters.getSize());
+        recruiterResponse.setTotalElements(pageRecruiters.getTotalElements());
+        recruiterResponse.setTotalPages(pageRecruiters.getTotalPages());
+        recruiterResponse.setLastPage(pageRecruiters.isLast());
+        return recruiterResponse;
     }
 }
