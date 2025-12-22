@@ -1,8 +1,10 @@
 package com.karthic.JobSeekingPlatform.controller;
 
+import com.karthic.JobSeekingPlatform.config.AppConstants;
 import com.karthic.JobSeekingPlatform.model.Users;
 import com.karthic.JobSeekingPlatform.payload.APIResponse;
 import com.karthic.JobSeekingPlatform.payload.JobDTO;
+import com.karthic.JobSeekingPlatform.payload.UserResponse;
 import com.karthic.JobSeekingPlatform.payload.UsersDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ import com.karthic.JobSeekingPlatform.service.UserService;
     @Autowired
     private UserService userService;
 
-    @PostMapping("/users/create")
+    @PostMapping("/admin/users/create")
     public ResponseEntity<UsersDTO> createUser(@Valid  @RequestBody UsersDTO userDTO) {
 
         UsersDTO savedUserDTO = userService.createUser(userDTO);
@@ -31,7 +33,29 @@ import com.karthic.JobSeekingPlatform.service.UserService;
         UsersDTO deletedUsers = userService.deleteUsers(userId);
         return new ResponseEntity<>(deletedUsers,HttpStatus.OK);
 
-    }    
+    }
+
+    @GetMapping("/public/users/{keyword}")
+    public ResponseEntity<UserResponse> getUsersByKeyword(@PathVariable String keyword,
+                                                                @RequestParam(name = "pageNumber", defaultValue= AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                                @RequestParam(name="pageSize", defaultValue= AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+                                                                @RequestParam(name="sortBy", defaultValue= AppConstants.SORT_USER_BY,required = false) String sortBy,
+                                                                @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
+
+        UserResponse userResponse = userService.searchUsersByKeyword(keyword,pageNumber,pageSize,sortBy,sortOrder);
+        return new ResponseEntity<>(userResponse,HttpStatus.FOUND);
+    }
+
+    @GetMapping("/public/users/id/{userId}")
+    public ResponseEntity<UserResponse> getUsersById(@PathVariable Long userId,
+                                                          @RequestParam(name = "pageNumber", defaultValue= AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                          @RequestParam(name="pageSize", defaultValue= AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+                                                          @RequestParam(name="sortBy", defaultValue= AppConstants.SORT_USER_BY,required = false) String sortBy,
+                                                          @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
+
+        UserResponse userResponse = userService.searchUsersById(userId,pageNumber,pageSize,sortBy,sortOrder);
+        return new ResponseEntity<>(userResponse,HttpStatus.FOUND);
+    }
 
 //        @GetMapping("/{id}")
 //        public APIResponse getUserById(@PathVariable Long id) { }
@@ -40,8 +64,7 @@ import com.karthic.JobSeekingPlatform.service.UserService;
 //        public APIResponse updateUser(@PathVariable Long id,
 //                                      @RequestBody UsersDTO usersDTO) { }
 //
-//        @DeleteMapping("/{id}")
-//        public APIResponse deleteUser(@PathVariable Long id) { }
+
     }
 
 
