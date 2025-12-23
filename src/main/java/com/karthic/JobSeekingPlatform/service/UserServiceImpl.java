@@ -111,6 +111,8 @@ public class UserServiceImpl implements UserService{
         usersFromDb.setEmail(users.getEmail());
         usersFromDb.setPassword(users.getPassword());
         usersFromDb.setUserPhoneNumber(users.getUserPhoneNumber());
+        usersFromDb.setSkills(users.getSkills());
+
 
         Users savedUsers = userRepository.save(usersFromDb);
 

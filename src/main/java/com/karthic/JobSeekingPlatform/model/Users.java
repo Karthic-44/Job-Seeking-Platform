@@ -28,8 +28,7 @@ public class Users {
 
     private Integer userPhoneNumber;
 
-    @OneToMany(mappedBy = "user")
-    private List<Skill> skill = new ArrayList<>() ;
+    private List<String> skills;
 
     @OneToMany(mappedBy = "user")
     private List<Qualification> qualification = new ArrayList<>();

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,5 +16,7 @@ public class UsersDTO {
     private String email;
     private String password;
     private Integer userPhoneNumber;
+    private List<String> skills;
+
 
 }
