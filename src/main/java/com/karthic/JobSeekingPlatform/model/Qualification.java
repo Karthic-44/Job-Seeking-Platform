@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Qualifications")
-public class Qualifications {
+public class Qualification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,7 @@ public class Qualifications {
 
 
     private String degree;
+    private String Institution;
     private Date startDate;
     private Date endDate;
 

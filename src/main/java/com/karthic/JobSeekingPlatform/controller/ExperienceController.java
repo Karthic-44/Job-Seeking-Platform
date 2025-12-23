@@ -3,7 +3,6 @@ package com.karthic.JobSeekingPlatform.controller;
 import com.karthic.JobSeekingPlatform.config.AppConstants;
 import com.karthic.JobSeekingPlatform.payload.ExperienceDTO;
 import com.karthic.JobSeekingPlatform.payload.ExperienceResponse;
-import com.karthic.JobSeekingPlatform.payload.ExperienceDTO;
 import com.karthic.JobSeekingPlatform.service.ExperienceService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -8,10 +8,11 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QualificationsDTO {
+public class QualificationDTO {
 
     private Integer qualificationId;
     private String degree;
+    private String Institution;
     private Date startDate;
     private Date endDate;
 }

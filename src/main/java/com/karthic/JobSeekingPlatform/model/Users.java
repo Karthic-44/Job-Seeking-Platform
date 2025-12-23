@@ -1,9 +1,6 @@
 package com.karthic.JobSeekingPlatform.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,7 +32,7 @@ public class Users {
     private List<Skill> skill = new ArrayList<>() ;
 
     @OneToMany(mappedBy = "user")
-    private List<Qualifications> qualification = new ArrayList<>();
+    private List<Qualification> qualification = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Experience> experience = new ArrayList<>();
