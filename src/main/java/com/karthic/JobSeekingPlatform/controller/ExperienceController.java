@@ -3,6 +3,7 @@ package com.karthic.JobSeekingPlatform.controller;
 import com.karthic.JobSeekingPlatform.config.AppConstants;
 import com.karthic.JobSeekingPlatform.payload.ExperienceDTO;
 import com.karthic.JobSeekingPlatform.payload.ExperienceResponse;
+import com.karthic.JobSeekingPlatform.payload.ExperienceDTO;
 import com.karthic.JobSeekingPlatform.service.ExperienceService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,15 @@ public class ExperienceController {
 
         ExperienceResponse experienceResponse = experienceService.searchExperienceByKeyword(keyword,pageNumber,pageSize,sortBy,sortOrder);
         return new ResponseEntity<>(experienceResponse,HttpStatus.FOUND);
+    }
+
+
+    @PutMapping("/admin/experience/{experienceId}")
+    public ResponseEntity<ExperienceDTO> updateExperience(@Valid @RequestBody ExperienceDTO experienceDTO,
+                                                        @PathVariable Long experienceId){
+
+        ExperienceDTO updatedExperienceDTO = experienceService.updateExperience(experienceId,experienceDTO);
+        return new ResponseEntity<>(updatedExperienceDTO,HttpStatus.OK);
     }
 
 }

@@ -12,4 +12,6 @@ public interface ExperienceService {
     ExperienceResponse getAllExperiences(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword);
 
     ExperienceResponse searchExperienceByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+
+    ExperienceDTO updateExperience(Long experienceId, @Valid ExperienceDTO experienceDTO);
 }
