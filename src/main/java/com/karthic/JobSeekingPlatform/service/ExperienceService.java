@@ -5,4 +5,6 @@ import jakarta.validation.Valid;
 
 public interface ExperienceService {
     ExperienceDTO createExperience(@Valid ExperienceDTO experienceDTO);
+
+    ExperienceDTO deleteExperience(Long experienceId);
 }

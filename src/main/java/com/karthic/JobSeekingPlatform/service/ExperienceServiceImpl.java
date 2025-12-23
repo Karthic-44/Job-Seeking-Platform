@@ -1,7 +1,10 @@
 package com.karthic.JobSeekingPlatform.service;
 
 import com.karthic.JobSeekingPlatform.Exception.APIException;
+import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Experience;
+import com.karthic.JobSeekingPlatform.model.Experience;
+import com.karthic.JobSeekingPlatform.payload.ExperienceDTO;
 import com.karthic.JobSeekingPlatform.payload.ExperienceDTO;
 import com.karthic.JobSeekingPlatform.repositories.ExperienceRepository;
 import org.modelmapper.ModelMapper;
@@ -26,5 +29,13 @@ public class ExperienceServiceImpl implements ExperienceService {
         }
         Experience savedUser = experienceRepository.save(experience);
         return  modelMapper.map(savedUser, ExperienceDTO.class);
+    }
+
+    @Override
+    public ExperienceDTO deleteExperience(Long experienceId) {
+        Experience experience = experienceRepository.findById(experienceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Experience","experienceId",experienceId) );
+        experienceRepository.delete(experience);
+        return modelMapper.map(experience, ExperienceDTO.class);
     }
 }
