@@ -1,4 +1,4 @@
 package com.karthic.JobSeekingPlatform.service;
 
-public interface JobSeekingService {
+public interface QualificationService {
 }
