@@ -3,13 +3,19 @@ package com.karthic.JobSeekingPlatform.service;
 import com.karthic.JobSeekingPlatform.Exception.APIException;
 import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Qualification;
-import com.karthic.JobSeekingPlatform.model.Qualification;
-import com.karthic.JobSeekingPlatform.payload.QualificationDTO;
+import com.karthic.JobSeekingPlatform.payload.*;
 import com.karthic.JobSeekingPlatform.payload.QualificationDTO;
 import com.karthic.JobSeekingPlatform.repositories.QualificationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class QualificationServiceImpl implements QualificationService {
@@ -39,6 +45,43 @@ public class QualificationServiceImpl implements QualificationService {
         qualificationRepository.delete(qualification);
         return modelMapper.map(qualification, QualificationDTO.class);
     }
+
+    @Override
+    public QualificationResponse getAllQualifications(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+
+        Specification<Qualification> spec = Specification.where(null);
+        if (keyword != null && !keyword.isEmpty()){
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("qualificationName")), "%"  + keyword.toLowerCase() + "%"));
+        }
+
+
+        Page<Qualification> pageQualifications = qualificationRepository.findAll(spec, pageDetails);
+
+        List<Qualification> qualifications = pageQualifications.getContent();
+
+        List<QualificationDTO> qualificationDTOS = qualifications.stream()
+                .map(qualification -> {
+                    QualificationDTO qualificationDTO = modelMapper.map(qualification, QualificationDTO.class);
+
+                    return qualificationDTO;
+                })
+
+                .toList();
+
+        QualificationResponse qualificationResponse = new QualificationResponse();
+        qualificationResponse.setContent(qualificationDTOS);
+        qualificationResponse.setPageNumber(pageQualifications.getNumber());
+        qualificationResponse.setPageSize(pageQualifications.getSize());
+        qualificationResponse.setTotalElements(pageQualifications.getTotalElements());
+        qualificationResponse.setTotalPages(pageQualifications.getTotalPages());
+        qualificationResponse.setLastPage(pageQualifications.isLast());
+        return qualificationResponse;      }
 
 
 }
