@@ -10,4 +10,6 @@ public interface QualificationService {
     QualificationDTO deleteQualification(Long qualificationId);
 
     QualificationResponse getAllQualifications(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword);
+
+    QualificationDTO updateQualification(Long qualificationId, @Valid QualificationDTO qualificationDTO);
 }

@@ -3,6 +3,7 @@ package com.karthic.JobSeekingPlatform.service;
 import com.karthic.JobSeekingPlatform.Exception.APIException;
 import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Qualification;
+import com.karthic.JobSeekingPlatform.model.Qualification;
 import com.karthic.JobSeekingPlatform.payload.*;
 import com.karthic.JobSeekingPlatform.payload.QualificationDTO;
 import com.karthic.JobSeekingPlatform.repositories.QualificationRepository;
@@ -82,6 +83,22 @@ public class QualificationServiceImpl implements QualificationService {
         qualificationResponse.setTotalPages(pageQualifications.getTotalPages());
         qualificationResponse.setLastPage(pageQualifications.isLast());
         return qualificationResponse;      }
+
+    @Override
+    public QualificationDTO updateQualification(Long qualificationId, QualificationDTO qualificationDTO) {
+        Qualification qualificationFromDb = qualificationRepository.findById(qualificationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Qualification", "qualificationId", qualificationId));
+
+        Qualification qualification = modelMapper.map(qualificationDTO, Qualification.class);
+
+        qualificationFromDb.setDegree(qualification.getDegree());
+        qualificationFromDb.setInstitution(qualification.getInstitution());
+        qualificationFromDb.setStartDate(qualification.getStartDate());
+        qualificationFromDb.setEndDate(qualification.getEndDate());
+
+        Qualification savedQualification = qualificationRepository.save(qualificationFromDb);
+
+        return modelMapper.map(savedQualification, QualificationDTO.class);     }
 
 
 }

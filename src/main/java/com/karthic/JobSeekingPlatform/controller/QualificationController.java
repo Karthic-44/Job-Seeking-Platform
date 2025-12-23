@@ -1,6 +1,7 @@
 package com.karthic.JobSeekingPlatform.controller;
 
 import com.karthic.JobSeekingPlatform.config.AppConstants;
+import com.karthic.JobSeekingPlatform.payload.QualificationDTO;
 import com.karthic.JobSeekingPlatform.payload.QualificationResponse;
 import com.karthic.JobSeekingPlatform.payload.QualificationDTO;
 import com.karthic.JobSeekingPlatform.service.QualificationService;
@@ -43,6 +44,15 @@ public class QualificationController {
     ){
         QualificationResponse qualificationResponse = qualificationService.getAllQualifications(pageNumber,pageSize,sortBy,sortOrder, keyword);
         return new ResponseEntity<>(qualificationResponse,HttpStatus.OK);
+    }
+
+
+    @PutMapping("/admin/qualification/{qualificationId}")
+    public ResponseEntity<QualificationDTO> updateQualification(@Valid @RequestBody QualificationDTO qualificationDTO,
+                                                          @PathVariable Long qualificationId){
+
+        QualificationDTO updatedQualificationDTO = qualificationService.updateQualification(qualificationId,qualificationDTO);
+        return new ResponseEntity<>(updatedQualificationDTO,HttpStatus.OK);
     }
 
 
