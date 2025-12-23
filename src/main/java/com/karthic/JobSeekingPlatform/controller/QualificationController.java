@@ -1,7 +1,6 @@
 package com.karthic.JobSeekingPlatform.controller;
 
 import com.karthic.JobSeekingPlatform.config.AppConstants;
-import com.karthic.JobSeekingPlatform.payload.QualificationDTO;
 import com.karthic.JobSeekingPlatform.payload.QualificationResponse;
 import com.karthic.JobSeekingPlatform.payload.QualificationDTO;
 import com.karthic.JobSeekingPlatform.service.QualificationService;
@@ -54,6 +53,18 @@ public class QualificationController {
         QualificationDTO updatedQualificationDTO = qualificationService.updateQualification(qualificationId,qualificationDTO);
         return new ResponseEntity<>(updatedQualificationDTO,HttpStatus.OK);
     }
+
+    @GetMapping("/public/qualifications/keyword/{keyword}")
+    public ResponseEntity<QualificationResponse> getQualificationByKeyword(@PathVariable String keyword,
+                                                                     @RequestParam(name = "pageNumber", defaultValue= AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                                     @RequestParam(name="pageSize", defaultValue= AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+                                                                     @RequestParam(name="sortBy", defaultValue= AppConstants.SORT_QUALIFICATION_BY,required = false) String sortBy,
+                                                                     @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
+
+        QualificationResponse qualificationResponse = qualificationService.searchQualificationByKeyword(keyword,pageNumber,pageSize,sortBy,sortOrder);
+        return new ResponseEntity<>(qualificationResponse,HttpStatus.FOUND);
+    }
+
 
 
 }

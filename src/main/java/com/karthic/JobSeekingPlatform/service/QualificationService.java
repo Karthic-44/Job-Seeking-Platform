@@ -12,4 +12,6 @@ public interface QualificationService {
     QualificationResponse getAllQualifications(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword);
 
     QualificationDTO updateQualification(Long qualificationId, @Valid QualificationDTO qualificationDTO);
+
+    QualificationResponse searchQualificationByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 }

@@ -11,4 +11,6 @@ public interface QualificationRepository extends JpaRepository<Qualification,Lon
     Qualification findByDegree(String degree);
 
     Page<Qualification> findAll(Specification<Qualification> spec, Pageable pageDetails);
+
+    Page<Qualification> findByDegreeLikeIgnoreCase(String s, Pageable pageDetails);
 }

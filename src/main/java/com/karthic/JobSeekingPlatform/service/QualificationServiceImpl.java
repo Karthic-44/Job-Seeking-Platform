@@ -4,6 +4,7 @@ import com.karthic.JobSeekingPlatform.Exception.APIException;
 import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Qualification;
 import com.karthic.JobSeekingPlatform.model.Qualification;
+import com.karthic.JobSeekingPlatform.model.Qualification;
 import com.karthic.JobSeekingPlatform.payload.*;
 import com.karthic.JobSeekingPlatform.payload.QualificationDTO;
 import com.karthic.JobSeekingPlatform.repositories.QualificationRepository;
@@ -99,6 +100,33 @@ public class QualificationServiceImpl implements QualificationService {
         Qualification savedQualification = qualificationRepository.save(qualificationFromDb);
 
         return modelMapper.map(savedQualification, QualificationDTO.class);     }
+
+    @Override
+    public QualificationResponse searchQualificationByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+        Page<Qualification> pageQualifications = qualificationRepository.findByDegreeLikeIgnoreCase('%' + keyword + '%', pageDetails);
+
+        List<Qualification> qualifications = pageQualifications.getContent();
+        List<QualificationDTO> qualificationDTOS = qualifications.stream()
+                .map(qualification -> modelMapper.map(qualification, QualificationDTO.class))
+                .toList();
+
+        if(qualifications.isEmpty()){
+            throw new APIException("Qualifications not found with keyword: " + keyword);
+        }
+
+        QualificationResponse qualificationResponse = new QualificationResponse();
+        qualificationResponse.setContent(qualificationDTOS);
+        qualificationResponse.setPageNumber(pageQualifications.getNumber());
+        qualificationResponse.setPageSize(pageQualifications.getSize());
+        qualificationResponse.setTotalElements(pageQualifications.getTotalElements());
+        qualificationResponse.setTotalPages(pageQualifications.getTotalPages());
+        qualificationResponse.setLastPage(pageQualifications.isLast());
+        return qualificationResponse;      }
 
 
 }
