@@ -36,6 +36,10 @@ public class Job {
     @JoinColumn(name = "user_id")
     private Users user;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
 
 
 }
