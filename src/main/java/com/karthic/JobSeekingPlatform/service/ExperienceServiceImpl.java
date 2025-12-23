@@ -81,4 +81,31 @@ public class ExperienceServiceImpl implements ExperienceService {
         experienceResponse.setTotalPages(pageExperiences.getTotalPages());
         experienceResponse.setLastPage(pageExperiences.isLast());
         return experienceResponse;    }
+
+    @Override
+    public ExperienceResponse searchExperienceByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+        Page<Experience> pageExperiences = experienceRepository.findByOrganizationNameLikeIgnoreCase('%' + keyword + '%', pageDetails);
+
+        List<Experience> experiences = pageExperiences.getContent();
+        List<ExperienceDTO> experienceDTOS = experiences.stream()
+                .map(experience -> modelMapper.map(experience, ExperienceDTO.class))
+                .toList();
+
+        if(experiences.isEmpty()){
+            throw new APIException("Experiences not found with keyword: " + keyword);
+        }
+
+        ExperienceResponse experienceResponse = new ExperienceResponse();
+        experienceResponse.setContent(experienceDTOS);
+        experienceResponse.setPageNumber(pageExperiences.getNumber());
+        experienceResponse.setPageSize(pageExperiences.getSize());
+        experienceResponse.setTotalElements(pageExperiences.getTotalElements());
+        experienceResponse.setTotalPages(pageExperiences.getTotalPages());
+        experienceResponse.setLastPage(pageExperiences.isLast());
+        return experienceResponse;    }
 }

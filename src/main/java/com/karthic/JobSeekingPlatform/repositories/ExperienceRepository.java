@@ -11,4 +11,6 @@ public interface ExperienceRepository extends JpaRepository<Experience,Long> {
     Experience findByOrganizationName(String organizationName);
 
     Page<Experience> findAll(Specification<Experience> spec, Pageable pageDetails);
+
+    Page<Experience> findByOrganizationNameLikeIgnoreCase(String s, Pageable pageDetails);
 }

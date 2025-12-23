@@ -10,4 +10,6 @@ public interface ExperienceService {
     ExperienceDTO deleteExperience(Long experienceId);
 
     ExperienceResponse getAllExperiences(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword);
+
+    ExperienceResponse searchExperienceByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 }
