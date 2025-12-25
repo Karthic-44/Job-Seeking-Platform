@@ -42,5 +42,7 @@ public class Users {
    @OneToOne(mappedBy = "user")
    private Job job;
 
-
+   
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Application> applications = new ArrayList<>();
 }

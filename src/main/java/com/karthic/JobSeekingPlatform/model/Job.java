@@ -1,5 +1,8 @@
 package com.karthic.JobSeekingPlatform.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -39,6 +42,10 @@ public class Job {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToOne(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Application applications;
+
 
 
 

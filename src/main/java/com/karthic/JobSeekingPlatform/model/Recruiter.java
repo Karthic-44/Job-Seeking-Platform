@@ -32,6 +32,9 @@ public class Recruiter {
     @OneToMany(mappedBy = "recruiter")
     private List<Job> job = new ArrayList<>();
 
+    
+    @OneToOne(mappedBy = "recruiter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Application applications;
 
 
 }
