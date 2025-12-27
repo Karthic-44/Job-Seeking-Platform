@@ -10,13 +10,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class ApplicationDTO {
     
-    private Long applicationId;
+   private Long applicationId;
     private Long userId;
-    private String userName;
-    private String email;
     private Long jobId;
-    private String jobName;
-    private String organizationName;
     private Date appliedDate;
     private String resumeURL;
 }
