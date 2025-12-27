@@ -14,5 +14,8 @@ public class JobDTO {
     private String requiredSkill;
     private String requiredQualifications;
     private String description;
+    private Long recruiterId; 
+    private Long userId;      
+    private Long categoryId;  
 
 }
