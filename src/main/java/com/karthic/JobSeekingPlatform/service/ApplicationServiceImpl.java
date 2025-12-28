@@ -1,6 +1,8 @@
 package com.karthic.JobSeekingPlatform.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.karthic.JobSeekingPlatform.Exception.APIException;
@@ -10,10 +12,16 @@ import com.karthic.JobSeekingPlatform.model.Job;
 import com.karthic.JobSeekingPlatform.model.Users;
 import com.karthic.JobSeekingPlatform.model.Recruiter;
 import com.karthic.JobSeekingPlatform.payload.ApplicationDTO;
+import com.karthic.JobSeekingPlatform.payload.ApplicationResponse;
 import com.karthic.JobSeekingPlatform.repositories.ApplicationRepository;
 import com.karthic.JobSeekingPlatform.repositories.JobRepository;
 import com.karthic.JobSeekingPlatform.repositories.UserRepository;
 import com.karthic.JobSeekingPlatform.repositories.RecruiterRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 
@@ -37,7 +45,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
-        // Check if application already exists
         if (applicationDTO.getApplicationId() != null) {
             Application existingApp = applicationRepository.findByApplicationId(applicationDTO.getApplicationId());
             if (existingApp != null) {
@@ -45,20 +52,17 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
         
-        // Fetch related entities
         Job job = jobRepository.findById(applicationDTO.getJobId())
             .orElseThrow(() -> new ResourceNotFoundException("Job", "jobId", applicationDTO.getJobId()));
             
         Users user = usersRepository.findById(applicationDTO.getUserId())
             .orElseThrow(() -> new ResourceNotFoundException("User", "userId", applicationDTO.getUserId()));
         
-        // Get recruiter from the job
         Recruiter recruiter = job.getRecruiter();
         if (recruiter == null) {
             throw new APIException("Job " + applicationDTO.getJobId() + " has no associated recruiter");
         }
         
-        // Create application entity
         Application application = new Application();
         application.setJob(job);
         application.setUser(user);
@@ -66,8 +70,51 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setAppliedDate(applicationDTO.getAppliedDate());
         application.setResumeURL(applicationDTO.getResumeURL());
         
-        // Save and return
         Application savedApplication = applicationRepository.save(application);
         return modelMapper.map(savedApplication, ApplicationDTO.class);
     }
-}
+
+    @Override
+    public ApplicationResponse getAllApplications(Long userId, Integer pageNumber, Integer pageSize, String sortBy,
+            String sortOrder, String keyword) {
+            Users user = usersRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+    
+    Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+            ? Sort.by(sortBy).ascending()
+            : Sort.by(sortBy).descending();
+
+    Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+
+    Specification<Application> spec = Specification.where(null);
+    
+    spec = spec.and((root, query, criteriaBuilder) ->
+            criteriaBuilder.equal(root.get("user").get("userId"), userId));
+    
+    if (keyword != null && !keyword.isEmpty()) {
+        spec = spec.and((root, query, criteriaBuilder) ->
+                criteriaBuilder.or(
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("job").get("jobName")), 
+                        "%" + keyword.toLowerCase() + "%"),
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("job").get("role")), 
+                        "%" + keyword.toLowerCase() + "%")
+                ));
+    }
+
+    Page<Application> pageApplications = applicationRepository.findAll(spec, pageDetails);
+    List<Application> applications = pageApplications.getContent();
+
+    List<ApplicationDTO> applicationDTOS = applications.stream()
+            .map(application -> modelMapper.map(application, ApplicationDTO.class))
+            .toList();
+
+    ApplicationResponse applicationResponse = new ApplicationResponse();
+    applicationResponse.setContent(applicationDTOS);
+    applicationResponse.setPageNumber(pageApplications.getNumber());
+    applicationResponse.setPageSize(pageApplications.getSize());
+    applicationResponse.setTotalElements(pageApplications.getTotalElements());
+    applicationResponse.setTotalPages(pageApplications.getTotalPages());
+    applicationResponse.setLastPage(pageApplications.isLast());
+    
+    return applicationResponse;
+}    }
