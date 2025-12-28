@@ -43,13 +43,11 @@ public class JobPostingServiceImpl implements JobPostingService {
 
     @Override
     public JobDTO createJob(JobDTO jobDTO) {
-        // Check if job already exists
         Job jobDb = jobRepository.findByJobName(jobDTO.getJobName());
         if (jobDb != null) {
             throw new APIException("Job " + jobDTO.getJobName() + " already exists");
         }
         
-        // Create new job
         Job job = new Job();
         job.setJobName(jobDTO.getJobName());
         job.setRole(jobDTO.getRole());
@@ -57,21 +55,18 @@ public class JobPostingServiceImpl implements JobPostingService {
         job.setRequiredQualifications(jobDTO.getRequiredQualifications());
         job.setDescription(jobDTO.getDescription());
         
-        // Set recruiter if provided
         if (jobDTO.getRecruiterId() != null) {
             Recruiter recruiter = recruiterRepository.findById(jobDTO.getRecruiterId())
                 .orElseThrow(() -> new ResourceNotFoundException("Recruiter", "recruiterId", jobDTO.getRecruiterId()));
             job.setRecruiter(recruiter);
         }
         
-        // Set user if provided
         if (jobDTO.getUserId() != null) {
             Users user = userRepository.findById(jobDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "userId", jobDTO.getUserId()));
             job.setUser(user);
         }
         
-        // Set category if provided
         if (jobDTO.getCategoryId() != null) {
             Category category = categoryRepository.findById(jobDTO.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", jobDTO.getCategoryId()));
@@ -101,7 +96,6 @@ public class JobPostingServiceImpl implements JobPostingService {
         jobFromDb.setRequiredQualifications(jobDTO.getRequiredQualifications());
         jobFromDb.setDescription(jobDTO.getDescription());
         
-        // Update recruiter if provided
         if (jobDTO.getRecruiterId() != null) {
             Recruiter recruiter = recruiterRepository.findById(jobDTO.getRecruiterId())
                 .orElseThrow(() -> new ResourceNotFoundException("Recruiter", "recruiterId", jobDTO.getRecruiterId()));
