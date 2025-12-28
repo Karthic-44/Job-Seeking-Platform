@@ -10,5 +10,8 @@ public interface ApplicationService {
 
     public ApplicationResponse getAllApplications(Long userId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder,
             String keyword);
+
+    public ApplicationResponse searchApplicationsById(Long applicationId, Integer pageNumber, Integer pageSize,
+            String sortBy, String sortOrder);
     
 }

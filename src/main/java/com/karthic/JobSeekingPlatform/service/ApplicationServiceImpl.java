@@ -13,6 +13,8 @@ import com.karthic.JobSeekingPlatform.model.Users;
 import com.karthic.JobSeekingPlatform.model.Recruiter;
 import com.karthic.JobSeekingPlatform.payload.ApplicationDTO;
 import com.karthic.JobSeekingPlatform.payload.ApplicationResponse;
+import com.karthic.JobSeekingPlatform.payload.UserResponse;
+import com.karthic.JobSeekingPlatform.payload.UsersDTO;
 import com.karthic.JobSeekingPlatform.repositories.ApplicationRepository;
 import com.karthic.JobSeekingPlatform.repositories.JobRepository;
 import com.karthic.JobSeekingPlatform.repositories.UserRepository;
@@ -117,4 +119,38 @@ public class ApplicationServiceImpl implements ApplicationService {
     applicationResponse.setLastPage(pageApplications.isLast());
     
     return applicationResponse;
-}    }
+}
+
+    @Override
+    public ApplicationResponse searchApplicationsById(Long applicationId, Integer pageNumber, Integer pageSize,
+            String sortBy, String sortOrder) {
+               
+Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+        Page<Application> pageApplication = applicationRepository.findByApplicationId(applicationId, pageDetails);
+
+        List<Application> applications = pageApplication.getContent();
+        List<ApplicationDTO> applicationsDTOS = applications.stream()
+                .map(application -> modelMapper.map(application, ApplicationDTO.class))
+                .toList();
+
+        if(applications.isEmpty()){
+            throw new APIException("Application not found with id: " + applicationId);
+        }
+
+        ApplicationResponse applicationResponse = new ApplicationResponse();
+        applicationResponse.setContent(applicationsDTOS);
+        applicationResponse.setPageNumber(pageApplication.getNumber());
+        applicationResponse.setPageSize(pageApplication.getSize());
+        applicationResponse.setTotalElements(pageApplication.getTotalElements());
+        applicationResponse.setTotalPages(pageApplication.getTotalPages());
+        applicationResponse.setLastPage(pageApplication.isLast());
+        return applicationResponse;            }
+    
+
+
+
+}

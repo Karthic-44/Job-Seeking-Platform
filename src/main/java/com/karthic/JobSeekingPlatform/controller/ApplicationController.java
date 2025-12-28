@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.karthic.JobSeekingPlatform.config.AppConstants;
 import com.karthic.JobSeekingPlatform.payload.ApplicationDTO;
 import com.karthic.JobSeekingPlatform.payload.ApplicationResponse;
+import com.karthic.JobSeekingPlatform.payload.ApplicationResponse;
 import com.karthic.JobSeekingPlatform.service.ApplicationService;
 
 import jakarta.validation.Valid;
@@ -32,8 +33,8 @@ public class ApplicationController {
         return new ResponseEntity<>(savedApplicationDTO, HttpStatus.CREATED);
     }
 
-      @GetMapping("/public/applications/{userId}")
-    public ResponseEntity<ApplicationResponse> getAllUserApplications(
+      @GetMapping("/public/applications/userId/{userId}")
+    public ResponseEntity<ApplicationResponse> getAllApplicationsOfUser(
             @PathVariable Long userId,
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "category", required = false) String category,
@@ -44,6 +45,17 @@ public class ApplicationController {
     ){
         ApplicationResponse applicationResponse = applicationService.getAllApplications(userId,pageNumber,pageSize,sortBy,sortOrder, keyword);
         return new ResponseEntity<>(applicationResponse,HttpStatus.OK);
+    }
+
+    @GetMapping("/public/applications/id/{applicationId}")
+    public ResponseEntity<ApplicationResponse> getApplicationsById(@PathVariable Long applicationId,
+                                                          @RequestParam(name = "pageNumber", defaultValue= AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                          @RequestParam(name="pageSize", defaultValue= AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+                                                          @RequestParam(name="sortBy", defaultValue= AppConstants.SORT_APPLICATION_BY,required = false) String sortBy,
+                                                          @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
+
+        ApplicationResponse applicationResponse = applicationService.searchApplicationsById(applicationId,pageNumber,pageSize,sortBy,sortOrder);
+        return new ResponseEntity<>(applicationResponse,HttpStatus.FOUND);
     }
 
     
