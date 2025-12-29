@@ -3,6 +3,7 @@ package com.karthic.JobSeekingPlatform.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.karthic.JobSeekingPlatform.config.AppConstants;
 import com.karthic.JobSeekingPlatform.payload.ApplicationDTO;
-import com.karthic.JobSeekingPlatform.payload.ApplicationResponse;
 import com.karthic.JobSeekingPlatform.payload.ApplicationResponse;
 import com.karthic.JobSeekingPlatform.service.ApplicationService;
 
@@ -56,6 +56,13 @@ public class ApplicationController {
 
         ApplicationResponse applicationResponse = applicationService.searchApplicationsById(applicationId,pageNumber,pageSize,sortBy,sortOrder);
         return new ResponseEntity<>(applicationResponse,HttpStatus.FOUND);
+    }
+
+    @DeleteMapping("/admin/application/{applicationId}")
+    public ResponseEntity<ApplicationDTO> deleteApplication(@PathVariable Long applicationId){
+
+        ApplicationDTO deleteApplication = applicationService.deleteApplication(applicationId);
+        return new ResponseEntity<>(deleteApplication, HttpStatus.OK);
     }
 
     

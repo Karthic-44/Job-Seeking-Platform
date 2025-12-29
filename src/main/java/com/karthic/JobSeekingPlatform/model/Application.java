@@ -24,11 +24,11 @@ public class Application {
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "jobID", nullable = false)
     private Job job;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "recruiter_id", nullable = false)
     private Recruiter recruiter;
 

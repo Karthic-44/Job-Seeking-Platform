@@ -13,8 +13,7 @@ import com.karthic.JobSeekingPlatform.model.Users;
 import com.karthic.JobSeekingPlatform.model.Recruiter;
 import com.karthic.JobSeekingPlatform.payload.ApplicationDTO;
 import com.karthic.JobSeekingPlatform.payload.ApplicationResponse;
-import com.karthic.JobSeekingPlatform.payload.UserResponse;
-import com.karthic.JobSeekingPlatform.payload.UsersDTO;
+
 import com.karthic.JobSeekingPlatform.repositories.ApplicationRepository;
 import com.karthic.JobSeekingPlatform.repositories.JobRepository;
 import com.karthic.JobSeekingPlatform.repositories.UserRepository;
@@ -149,8 +148,17 @@ Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
         applicationResponse.setTotalPages(pageApplication.getTotalPages());
         applicationResponse.setLastPage(pageApplication.isLast());
         return applicationResponse;            }
-    
 
+
+    @Override
+    public ApplicationDTO deleteApplication(Long applicationId) {
+
+    Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Application","applicationId",applicationId) );
+
+        applicationRepository.delete(application);
+        return modelMapper.map(application,ApplicationDTO.class);    }
+    
 
 
 }

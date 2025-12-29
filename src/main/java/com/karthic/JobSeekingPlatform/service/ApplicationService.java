@@ -13,5 +13,7 @@ public interface ApplicationService {
 
     public ApplicationResponse searchApplicationsById(Long applicationId, Integer pageNumber, Integer pageSize,
             String sortBy, String sortOrder);
+
+    public ApplicationDTO deleteApplication(Long applicationId);
     
 }

@@ -43,8 +43,8 @@ public class Job {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToOne(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Application applications;
+    @OneToMany(mappedBy = "job", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Application> applications = new ArrayList<>();
 
 
 

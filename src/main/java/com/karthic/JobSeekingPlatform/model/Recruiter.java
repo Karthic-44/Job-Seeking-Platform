@@ -33,8 +33,8 @@ public class Recruiter {
     private List<Job> job = new ArrayList<>();
 
     
-    @OneToOne(mappedBy = "recruiter", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Application applications;
+    @OneToMany(mappedBy = "recruiter", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Application> applications = new ArrayList<>();
 
 
 }
