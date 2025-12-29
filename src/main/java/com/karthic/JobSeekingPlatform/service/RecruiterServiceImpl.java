@@ -2,10 +2,7 @@ package com.karthic.JobSeekingPlatform.service;
 
 import com.karthic.JobSeekingPlatform.Exception.APIException;
 import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
-import com.karthic.JobSeekingPlatform.model.Job;
 import com.karthic.JobSeekingPlatform.model.Recruiter;
-import com.karthic.JobSeekingPlatform.payload.JobDTO;
-import com.karthic.JobSeekingPlatform.payload.JobResponse;
 import com.karthic.JobSeekingPlatform.payload.RecruiterDTO;
 import com.karthic.JobSeekingPlatform.payload.RecruiterResponse;
 import com.karthic.JobSeekingPlatform.repositories.RecruiterRepository;

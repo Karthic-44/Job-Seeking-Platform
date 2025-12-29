@@ -13,7 +13,7 @@ import com.karthic.JobSeekingPlatform.model.Users;
 import com.karthic.JobSeekingPlatform.model.Recruiter;
 import com.karthic.JobSeekingPlatform.payload.ApplicationDTO;
 import com.karthic.JobSeekingPlatform.payload.ApplicationResponse;
-
+import com.karthic.JobSeekingPlatform.payload.RecruiterDTO;
 import com.karthic.JobSeekingPlatform.repositories.ApplicationRepository;
 import com.karthic.JobSeekingPlatform.repositories.JobRepository;
 import com.karthic.JobSeekingPlatform.repositories.UserRepository;
@@ -158,6 +158,20 @@ Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
 
         applicationRepository.delete(application);
         return modelMapper.map(application,ApplicationDTO.class);    }
+
+    @Override
+    public ApplicationDTO updateApplication(Long applicationId, ApplicationDTO applicationDTO) {
+Application applicationFromDb = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Application", "applicationId", applicationId));
+
+        Application application = modelMapper.map(applicationDTO, Application.class);
+
+        applicationFromDb.setAppliedDate(application.getAppliedDate());
+        applicationFromDb.setResumeURL(application.getResumeURL());
+
+        Application savedApplication = applicationRepository.save(applicationFromDb);
+
+        return modelMapper.map(savedApplication, ApplicationDTO.class);    }
     
 
 
