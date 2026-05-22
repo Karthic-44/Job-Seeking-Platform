@@ -4,8 +4,6 @@ import com.karthic.JobSeekingPlatform.Exception.APIException;
 import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Qualification;
 import com.karthic.JobSeekingPlatform.model.Users;
-import com.karthic.JobSeekingPlatform.model.Qualification;
-import com.karthic.JobSeekingPlatform.model.Qualification;
 import com.karthic.JobSeekingPlatform.payload.*;
 import com.karthic.JobSeekingPlatform.repositories.QualificationRepository;
 import com.karthic.JobSeekingPlatform.repositories.UserRepository;

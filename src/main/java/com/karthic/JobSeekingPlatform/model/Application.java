@@ -1,16 +1,16 @@
 package com.karthic.JobSeekingPlatform.model;
 
 import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity (name="application")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Application {
@@ -20,14 +20,17 @@ public class Application {
     @Column(name = "application_id")
     private Long applicationId;
 
+    @JsonBackReference("user-application")
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
+    @JsonBackReference("job-application")
     @ManyToOne
     @JoinColumn(name = "job_id", nullable = false)
     private Job job;
 
+    @JsonBackReference("recruiter-application")
     @ManyToOne
     @JoinColumn(name = "recruiter_id", nullable = false)
     private Recruiter recruiter;
