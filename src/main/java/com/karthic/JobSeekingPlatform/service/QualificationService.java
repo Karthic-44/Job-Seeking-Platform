@@ -5,7 +5,7 @@ import com.karthic.JobSeekingPlatform.payload.QualificationResponse;
 import jakarta.validation.Valid;
 
 public interface QualificationService {
-    QualificationDTO createQualification(@Valid QualificationDTO qualificationDTO);
+    QualificationDTO createQualification(@Valid Long userId, QualificationDTO qualificationDTO);
 
     QualificationDTO deleteQualification(Long qualificationId);
 

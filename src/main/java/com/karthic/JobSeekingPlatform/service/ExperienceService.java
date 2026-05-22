@@ -5,7 +5,7 @@ import com.karthic.JobSeekingPlatform.payload.ExperienceResponse;
 import jakarta.validation.Valid;
 
 public interface ExperienceService {
-    ExperienceDTO createExperience(@Valid ExperienceDTO experienceDTO);
+    ExperienceDTO createExperience(@Valid Long userId, ExperienceDTO experienceDTO);
 
     ExperienceDTO deleteExperience(Long experienceId);
 

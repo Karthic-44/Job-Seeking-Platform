@@ -3,11 +3,13 @@ package com.karthic.JobSeekingPlatform.service;
 import com.karthic.JobSeekingPlatform.Exception.APIException;
 import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Qualification;
+import com.karthic.JobSeekingPlatform.model.Users;
 import com.karthic.JobSeekingPlatform.model.Qualification;
 import com.karthic.JobSeekingPlatform.model.Qualification;
 import com.karthic.JobSeekingPlatform.payload.*;
-import com.karthic.JobSeekingPlatform.payload.QualificationDTO;
 import com.karthic.JobSeekingPlatform.repositories.QualificationRepository;
+import com.karthic.JobSeekingPlatform.repositories.UserRepository;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,18 +30,27 @@ public class QualificationServiceImpl implements QualificationService {
     @Autowired
     private QualificationRepository qualificationRepository;
 
+    @Autowired
+    private UserRepository userRepository;
     
 
 
     @Override
-    public QualificationDTO createQualification(QualificationDTO qualificationDTO) {
+    public QualificationDTO createQualification( Long userId, QualificationDTO qualificationDTO) {
         Qualification qualification = modelMapper.map(qualificationDTO,Qualification.class);
         Qualification qualificationDb = qualificationRepository.findByDegree(qualification.getDegree());
         if (qualificationDb!=null){
             throw new APIException("Qualification "+ qualification.getDegree() + " already exists");
         }
-        Qualification savedUser = qualificationRepository.save(qualification);
-        return  modelMapper.map(savedUser, QualificationDTO.class);
+
+        Users user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","userId",userId));
+        qualification.setUser(user);
+
+
+
+
+        Qualification savedQualification = qualificationRepository.save(qualification);
+        return  modelMapper.map(savedQualification, QualificationDTO.class);
     }
 
     @Override

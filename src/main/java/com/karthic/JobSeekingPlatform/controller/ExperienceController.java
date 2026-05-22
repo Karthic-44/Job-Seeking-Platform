@@ -18,9 +18,9 @@ public class ExperienceController {
     private ExperienceService experienceService;
 
     @PostMapping("/admin/experience/create")
-    public ResponseEntity<ExperienceDTO> createExperience(@Valid @RequestBody ExperienceDTO experienceDTO) {
+    public ResponseEntity<ExperienceDTO> createExperience(@Valid @PathVariable Long userId, @RequestBody ExperienceDTO experienceDTO) {
 
-        ExperienceDTO savedExperienceDTO = experienceService.createExperience(experienceDTO);
+        ExperienceDTO savedExperienceDTO = experienceService.createExperience(userId,experienceDTO);
         return new ResponseEntity<>(savedExperienceDTO, HttpStatus.CREATED);
 
     }

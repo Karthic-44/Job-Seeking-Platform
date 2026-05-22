@@ -3,9 +3,11 @@ package com.karthic.JobSeekingPlatform.service;
 import com.karthic.JobSeekingPlatform.Exception.APIException;
 import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Experience;
+import com.karthic.JobSeekingPlatform.model.Users;
 import com.karthic.JobSeekingPlatform.payload.*;
-import com.karthic.JobSeekingPlatform.payload.ExperienceDTO;
 import com.karthic.JobSeekingPlatform.repositories.ExperienceRepository;
+import com.karthic.JobSeekingPlatform.repositories.UserRepository;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,15 +28,22 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Autowired
     private ExperienceRepository experienceRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public ExperienceDTO createExperience(ExperienceDTO experienceDTO) {
+    public ExperienceDTO createExperience(Long userId, ExperienceDTO experienceDTO) {
         Experience experience = modelMapper.map(experienceDTO,Experience.class);
         Experience experienceDb = experienceRepository.findByOrganizationName(experience.getOrganizationName());
         if (experienceDb!=null){
             throw new APIException("Experience "+ experience.getOrganizationName() + " already exists");
         }
-        Experience savedUser = experienceRepository.save(experience);
-        return  modelMapper.map(savedUser, ExperienceDTO.class);
+
+        Users user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","userId",userId));
+        experience.setUser(user);
+
+        Experience savedExperience = experienceRepository.save(experience);
+        return  modelMapper.map(savedExperience, ExperienceDTO.class);
     }
 
     @Override

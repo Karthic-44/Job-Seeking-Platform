@@ -18,9 +18,9 @@ public class QualificationController {
     private QualificationService qualificationService;
 
     @PostMapping("/admin/qualification/create")
-    public ResponseEntity<QualificationDTO> createQualification(@Valid @RequestBody QualificationDTO qualificationDTO) {
+    public ResponseEntity<QualificationDTO> createQualification(@Valid @PathVariable Long userId, @RequestBody QualificationDTO qualificationDTO) {
 
-        QualificationDTO savedQualificationDTO = qualificationService.createQualification(qualificationDTO);
+        QualificationDTO savedQualificationDTO = qualificationService.createQualification(userId,qualificationDTO);
         return new ResponseEntity<>(savedQualificationDTO, HttpStatus.CREATED);
 
     }
