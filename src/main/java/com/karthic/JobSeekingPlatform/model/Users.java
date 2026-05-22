@@ -40,7 +40,7 @@ public class Users {
     private String userPhoneNumber;
 
     @ElementCollection
-    private List<String> skills;
+    private List<String> skills = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Qualification> qualification = new ArrayList<>();
