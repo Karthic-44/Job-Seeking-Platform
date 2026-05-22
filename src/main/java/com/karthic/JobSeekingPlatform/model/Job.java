@@ -19,7 +19,7 @@ public class Job {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "jobID")
+    @Column(name = "job_id")
     private Long jobId;
 
     @NotBlank
@@ -34,10 +34,6 @@ public class Job {
     @ManyToOne
     @JoinColumn(name = "recruiter_id")
     private Recruiter recruiter;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

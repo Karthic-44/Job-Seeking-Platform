@@ -25,7 +25,7 @@ public class Application {
     private Users user;
 
     @ManyToOne
-    @JoinColumn(name = "jobID", nullable = false)
+    @JoinColumn(name = "job_id", nullable = false)
     private Job job;
 
     @ManyToOne

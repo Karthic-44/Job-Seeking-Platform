@@ -56,7 +56,7 @@ public class ApplicationController {
                                                           @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
 
         ApplicationResponse applicationResponse = applicationService.searchApplicationsById(applicationId,pageNumber,pageSize,sortBy,sortOrder);
-        return new ResponseEntity<>(applicationResponse,HttpStatus.FOUND);
+        return new ResponseEntity<>(applicationResponse,HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/application/{applicationId}")

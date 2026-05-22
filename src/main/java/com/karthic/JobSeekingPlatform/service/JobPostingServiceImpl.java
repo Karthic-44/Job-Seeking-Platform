@@ -61,11 +61,6 @@ public class JobPostingServiceImpl implements JobPostingService {
             job.setRecruiter(recruiter);
         }
         
-        if (jobDTO.getUserId() != null) {
-            Users user = userRepository.findById(jobDTO.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "userId", jobDTO.getUserId()));
-            job.setUser(user);
-        }
         
         if (jobDTO.getCategoryId() != null) {
             Category category = categoryRepository.findById(jobDTO.getCategoryId())

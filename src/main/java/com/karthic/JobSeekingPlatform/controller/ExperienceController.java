@@ -54,7 +54,7 @@ public class ExperienceController {
                                                                    @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
 
         ExperienceResponse experienceResponse = experienceService.searchExperienceByKeyword(keyword,pageNumber,pageSize,sortBy,sortOrder);
-        return new ResponseEntity<>(experienceResponse,HttpStatus.FOUND);
+        return new ResponseEntity<>(experienceResponse,HttpStatus.OK);
     }
 
 

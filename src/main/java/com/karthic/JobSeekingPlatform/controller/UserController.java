@@ -43,7 +43,7 @@ import com.karthic.JobSeekingPlatform.service.UserService;
                                                                 @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
 
         UserResponse userResponse = userService.searchUsersByKeyword(keyword,pageNumber,pageSize,sortBy,sortOrder);
-        return new ResponseEntity<>(userResponse,HttpStatus.FOUND);
+        return new ResponseEntity<>(userResponse,HttpStatus.OK);
     }
 
     @GetMapping("/public/users/id/{userId}")
@@ -54,7 +54,7 @@ import com.karthic.JobSeekingPlatform.service.UserService;
                                                           @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
 
         UserResponse userResponse = userService.searchUsersById(userId,pageNumber,pageSize,sortBy,sortOrder);
-        return new ResponseEntity<>(userResponse,HttpStatus.FOUND);
+        return new ResponseEntity<>(userResponse,HttpStatus.OK);
     }
 
     @PutMapping("/admin/users/{userId}")

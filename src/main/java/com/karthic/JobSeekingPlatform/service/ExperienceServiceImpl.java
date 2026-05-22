@@ -56,7 +56,7 @@ public class ExperienceServiceImpl implements ExperienceService {
         Specification<Experience> spec = Specification.where(null);
         if (keyword != null && !keyword.isEmpty()){
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(criteriaBuilder.lower(root.get("experienceName")), "%"  + keyword.toLowerCase() + "%"));
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("organizationName")), "%"  + keyword.toLowerCase() + "%"));
         }
 
 

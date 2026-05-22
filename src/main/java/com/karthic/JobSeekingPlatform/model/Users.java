@@ -1,6 +1,8 @@
 package com.karthic.JobSeekingPlatform.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,14 +22,20 @@ public class Users {
     @Column(name = "user_id")
     private Long userId;
 
+    @NotBlank
     private String userName;
 
+    @NotBlank
     private String password;
 
+    @NotBlank
+    @Email
     private String email;
 
-    private Integer userPhoneNumber;
+    @NotBlank
+    private String userPhoneNumber;
 
+    @ElementCollection
     private List<String> skills;
 
     @OneToMany(mappedBy = "user")
@@ -38,11 +46,7 @@ public class Users {
 
     @OneToOne(mappedBy = "user")
     private Recruiter recruiter;
-
-   @OneToOne(mappedBy = "user")
-   private Job job;
-
-   
+    
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Application> applications = new ArrayList<>();
 }

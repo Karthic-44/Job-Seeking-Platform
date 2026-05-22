@@ -28,6 +28,8 @@ public class QualificationServiceImpl implements QualificationService {
     @Autowired
     private QualificationRepository qualificationRepository;
 
+    
+
 
     @Override
     public QualificationDTO createQualification(QualificationDTO qualificationDTO) {
@@ -59,7 +61,7 @@ public class QualificationServiceImpl implements QualificationService {
         Specification<Qualification> spec = Specification.where(null);
         if (keyword != null && !keyword.isEmpty()){
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(criteriaBuilder.lower(root.get("qualificationName")), "%"  + keyword.toLowerCase() + "%"));
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("degree")), "%"  + keyword.toLowerCase() + "%"));
         }
 
 

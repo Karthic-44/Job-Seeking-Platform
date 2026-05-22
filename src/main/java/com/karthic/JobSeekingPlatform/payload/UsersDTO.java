@@ -15,7 +15,7 @@ public class UsersDTO {
     private String userName;
     private String email;
     private String password;
-    private Integer userPhoneNumber;
+    private String userPhoneNumber;
     private List<String> skills;
 
 

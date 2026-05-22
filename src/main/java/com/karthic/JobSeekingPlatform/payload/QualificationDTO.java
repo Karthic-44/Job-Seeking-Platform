@@ -12,7 +12,7 @@ public class QualificationDTO {
 
     private Integer qualificationId;
     private String degree;
-    private String Institution;
+    private String institution;
     private Date startDate;
     private Date endDate;
 }

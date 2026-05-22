@@ -55,7 +55,7 @@ public class RecruiterController {
                                                         @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
 
         RecruiterResponse recruiterResponse = recruiterService.searchRecruiterByKeyword(keyword,pageNumber,pageSize,sortBy,sortOrder);
-        return new ResponseEntity<>(recruiterResponse,HttpStatus.FOUND);
+        return new ResponseEntity<>(recruiterResponse,HttpStatus.OK);
     }
 
     @PutMapping("/admin/recruiter/{recruiterId}")

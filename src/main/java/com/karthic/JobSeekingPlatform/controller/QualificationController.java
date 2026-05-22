@@ -62,7 +62,7 @@ public class QualificationController {
                                                                      @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
 
         QualificationResponse qualificationResponse = qualificationService.searchQualificationByKeyword(keyword,pageNumber,pageSize,sortBy,sortOrder);
-        return new ResponseEntity<>(qualificationResponse,HttpStatus.FOUND);
+        return new ResponseEntity<>(qualificationResponse,HttpStatus.OK);
     }
 
 

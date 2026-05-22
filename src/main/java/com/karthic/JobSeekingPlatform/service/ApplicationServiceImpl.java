@@ -132,13 +132,16 @@ Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
         Page<Application> pageApplication = applicationRepository.findByApplicationId(applicationId, pageDetails);
 
         List<Application> applications = pageApplication.getContent();
+        
+        if(applications.isEmpty()){
+            throw new APIException("Application not found with id: " + applicationId);
+        }
+        
         List<ApplicationDTO> applicationsDTOS = applications.stream()
                 .map(application -> modelMapper.map(application, ApplicationDTO.class))
                 .toList();
 
-        if(applications.isEmpty()){
-            throw new APIException("Application not found with id: " + applicationId);
-        }
+       
 
         ApplicationResponse applicationResponse = new ApplicationResponse();
         applicationResponse.setContent(applicationsDTOS);

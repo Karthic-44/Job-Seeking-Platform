@@ -40,7 +40,7 @@ public class JobController {
                                                                 @RequestParam(name="sortOrder", defaultValue= AppConstants.SORT_ORDER,required = false) String sortOrder){
 
         JobResponse jobResponse = jobPostingService.searchJobByKeyword(keyword,pageNumber,pageSize,sortBy,sortOrder);
-        return new ResponseEntity<>(jobResponse,HttpStatus.FOUND);
+        return new ResponseEntity<>(jobResponse,HttpStatus.OK);
     }
 
     @PostMapping("/public/job")
