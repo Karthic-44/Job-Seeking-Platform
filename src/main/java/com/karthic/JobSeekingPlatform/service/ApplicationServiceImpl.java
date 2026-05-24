@@ -10,14 +10,11 @@ import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Application;
 import com.karthic.JobSeekingPlatform.model.Job;
 import com.karthic.JobSeekingPlatform.model.Users;
-import com.karthic.JobSeekingPlatform.model.Recruiter;
 import com.karthic.JobSeekingPlatform.payload.ApplicationDTO;
 import com.karthic.JobSeekingPlatform.payload.ApplicationResponse;
-import com.karthic.JobSeekingPlatform.payload.RecruiterDTO;
 import com.karthic.JobSeekingPlatform.repositories.ApplicationRepository;
 import com.karthic.JobSeekingPlatform.repositories.JobRepository;
 import com.karthic.JobSeekingPlatform.repositories.UserRepository;
-import com.karthic.JobSeekingPlatform.repositories.RecruiterRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -41,8 +38,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Autowired
     private UserRepository usersRepository;
     
-    @Autowired
-    private RecruiterRepository recruiterRepository;
 
     @Override
     public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
@@ -59,15 +54,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         Users user = usersRepository.findById(applicationDTO.getUserId())
             .orElseThrow(() -> new ResourceNotFoundException("User", "userId", applicationDTO.getUserId()));
         
-        Recruiter recruiter = job.getRecruiter();
-        if (recruiter == null) {
-            throw new APIException("Job " + applicationDTO.getJobId() + " has no associated recruiter");
-        }
+       
         
         Application application = new Application();
         application.setJob(job);
         application.setUser(user);
-        application.setRecruiter(recruiter);
         application.setAppliedDate(applicationDTO.getAppliedDate());
         application.setResumeURL(applicationDTO.getResumeURL());
         

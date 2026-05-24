@@ -17,15 +17,15 @@ public class ExperienceController {
     @Autowired
     private ExperienceService experienceService;
 
-    @PostMapping("/admin/experience/create")
-    public ResponseEntity<ExperienceDTO> createExperience(@Valid @PathVariable Long userId, @RequestBody ExperienceDTO experienceDTO) {
+    @PostMapping("/user/experience/create/{userId}")
+    public ResponseEntity<ExperienceDTO> createExperience( @PathVariable Long userId, @Valid @RequestBody ExperienceDTO experienceDTO) {
 
         ExperienceDTO savedExperienceDTO = experienceService.createExperience(userId,experienceDTO);
         return new ResponseEntity<>(savedExperienceDTO, HttpStatus.CREATED);
 
     }
 
-    @DeleteMapping("/admin/experience/{experienceId}")
+    @DeleteMapping("/user/experience/{experienceId}")
     public ResponseEntity<ExperienceDTO> deleteExperience(@PathVariable Long experienceId){
 
         ExperienceDTO deleteExperience = experienceService.deleteExperience(experienceId);
@@ -58,7 +58,7 @@ public class ExperienceController {
     }
 
 
-    @PutMapping("/admin/experience/{experienceId}")
+    @PutMapping("/user/experience/{experienceId}")
     public ResponseEntity<ExperienceDTO> updateExperience(@Valid @RequestBody ExperienceDTO experienceDTO,
                                                         @PathVariable Long experienceId){
 

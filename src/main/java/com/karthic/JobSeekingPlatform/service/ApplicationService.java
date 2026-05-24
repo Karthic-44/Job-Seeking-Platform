@@ -3,7 +3,6 @@ package com.karthic.JobSeekingPlatform.service;
 import com.karthic.JobSeekingPlatform.payload.ApplicationDTO;
 import com.karthic.JobSeekingPlatform.payload.ApplicationResponse;
 
-import jakarta.validation.Valid;
 
 
 public interface ApplicationService {

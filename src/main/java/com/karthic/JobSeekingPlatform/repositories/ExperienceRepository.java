@@ -1,7 +1,6 @@
 package com.karthic.JobSeekingPlatform.repositories;
 
 import com.karthic.JobSeekingPlatform.model.Experience;
-import com.karthic.JobSeekingPlatform.model.Recruiter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

@@ -30,11 +30,6 @@ public class Application {
     @JoinColumn(name = "job_id", nullable = false)
     private Job job;
 
-    @JsonBackReference("recruiter-application")
-    @ManyToOne
-    @JoinColumn(name = "recruiter_id", nullable = false)
-    private Recruiter recruiter;
-
     private Date appliedDate;
     private String resumeURL;
 }

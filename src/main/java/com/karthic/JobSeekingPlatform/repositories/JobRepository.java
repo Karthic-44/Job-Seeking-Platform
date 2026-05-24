@@ -1,7 +1,6 @@
 package com.karthic.JobSeekingPlatform.repositories;
 
 import com.karthic.JobSeekingPlatform.model.Job;
-import com.karthic.JobSeekingPlatform.payload.JobDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

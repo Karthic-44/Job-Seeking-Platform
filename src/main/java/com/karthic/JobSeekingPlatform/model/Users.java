@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -36,7 +38,6 @@ public class Users {
     @Email
     private String email;
 
-    @NotBlank
     private String userPhoneNumber;
 
     @ElementCollection
@@ -48,10 +49,12 @@ public class Users {
     @OneToMany(mappedBy = "user")
     private List<Experience> experience = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user")
-    private Recruiter recruiter;
-    
     @JsonManagedReference("user-application")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Application> applications = new ArrayList<>();
-}
+
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+}   

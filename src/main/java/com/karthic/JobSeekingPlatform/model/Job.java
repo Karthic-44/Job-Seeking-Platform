@@ -36,10 +36,6 @@ public class Job {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "recruiter_id")
-    private Recruiter recruiter;
-
-    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 

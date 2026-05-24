@@ -3,12 +3,9 @@ package com.karthic.JobSeekingPlatform.service;
 import com.karthic.JobSeekingPlatform.Exception.APIException;
 import com.karthic.JobSeekingPlatform.Exception.ResourceNotFoundException;
 import com.karthic.JobSeekingPlatform.model.Job;
-import com.karthic.JobSeekingPlatform.model.Recruiter;
-import com.karthic.JobSeekingPlatform.model.Users;
 import com.karthic.JobSeekingPlatform.model.Category;
 import com.karthic.JobSeekingPlatform.payload.JobDTO;
 import com.karthic.JobSeekingPlatform.payload.JobResponse;
-import com.karthic.JobSeekingPlatform.repositories.RecruiterRepository;
 import com.karthic.JobSeekingPlatform.repositories.UserRepository;
 import com.karthic.JobSeekingPlatform.repositories.CategoryRepository;
 import org.modelmapper.ModelMapper;
@@ -33,9 +30,6 @@ public class JobPostingServiceImpl implements JobPostingService {
     private JobRepository jobRepository;
     
     @Autowired
-    private RecruiterRepository recruiterRepository;
-    
-    @Autowired
     private UserRepository userRepository;
     
     @Autowired
@@ -54,13 +48,6 @@ public class JobPostingServiceImpl implements JobPostingService {
         job.setRequiredSkill(jobDTO.getRequiredSkill());
         job.setRequiredQualifications(jobDTO.getRequiredQualifications());
         job.setDescription(jobDTO.getDescription());
-        
-        if (jobDTO.getRecruiterId() != null) {
-            Recruiter recruiter = recruiterRepository.findById(jobDTO.getRecruiterId())
-                .orElseThrow(() -> new ResourceNotFoundException("Recruiter", "recruiterId", jobDTO.getRecruiterId()));
-            job.setRecruiter(recruiter);
-        }
-        
         
         if (jobDTO.getCategoryId() != null) {
             Category category = categoryRepository.findById(jobDTO.getCategoryId())
@@ -90,12 +77,6 @@ public class JobPostingServiceImpl implements JobPostingService {
         jobFromDb.setRequiredSkill(jobDTO.getRequiredSkill());
         jobFromDb.setRequiredQualifications(jobDTO.getRequiredQualifications());
         jobFromDb.setDescription(jobDTO.getDescription());
-        
-        if (jobDTO.getRecruiterId() != null) {
-            Recruiter recruiter = recruiterRepository.findById(jobDTO.getRecruiterId())
-                .orElseThrow(() -> new ResourceNotFoundException("Recruiter", "recruiterId", jobDTO.getRecruiterId()));
-            jobFromDb.setRecruiter(recruiter);
-        }
 
         Job savedJob = jobRepository.save(jobFromDb);
         return modelMapper.map(savedJob, JobDTO.class);

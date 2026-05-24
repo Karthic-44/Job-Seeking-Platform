@@ -1,9 +1,6 @@
 package com.karthic.JobSeekingPlatform.controller;
 
 import com.karthic.JobSeekingPlatform.config.AppConstants;
-import com.karthic.JobSeekingPlatform.model.Users;
-import com.karthic.JobSeekingPlatform.payload.APIResponse;
-import com.karthic.JobSeekingPlatform.payload.JobDTO;
 import com.karthic.JobSeekingPlatform.payload.UserResponse;
 import com.karthic.JobSeekingPlatform.payload.UsersDTO;
 import jakarta.validation.Valid;

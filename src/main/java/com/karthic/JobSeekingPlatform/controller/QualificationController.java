@@ -17,15 +17,15 @@ public class QualificationController {
     @Autowired
     private QualificationService qualificationService;
 
-    @PostMapping("/admin/qualification/create")
-    public ResponseEntity<QualificationDTO> createQualification(@Valid @PathVariable Long userId, @RequestBody QualificationDTO qualificationDTO) {
+    @PostMapping("/user/qualification/create/{userId}")
+    public ResponseEntity<QualificationDTO> createQualification( @PathVariable Long userId, @Valid @RequestBody QualificationDTO qualificationDTO) {
 
         QualificationDTO savedQualificationDTO = qualificationService.createQualification(userId,qualificationDTO);
         return new ResponseEntity<>(savedQualificationDTO, HttpStatus.CREATED);
 
     }
 
-    @DeleteMapping("/admin/qualification/{qualificationId}")
+    @DeleteMapping("/user/qualification/{qualificationId}")
     public ResponseEntity<QualificationDTO> deleteQualification(@PathVariable Long qualificationId){
 
         QualificationDTO deleteQualification = qualificationService.deleteQualification(qualificationId);
@@ -46,7 +46,7 @@ public class QualificationController {
     }
 
 
-    @PutMapping("/admin/qualification/{qualificationId}")
+    @PutMapping("/user/qualification/{qualificationId}")
     public ResponseEntity<QualificationDTO> updateQualification(@Valid @RequestBody QualificationDTO qualificationDTO,
                                                           @PathVariable Long qualificationId){
 

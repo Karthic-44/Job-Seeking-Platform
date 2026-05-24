@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UsersDTO createUser(UsersDTO userDTO) {
         Users user = modelMapper.map(userDTO,Users.class);
-        Users userDb = userRepository.findByUserName(user.getUserName());
+        Users userDb = userRepository.findByUserName(user.getUserName()).orElse(null);
         if (userDb!=null){
             throw new APIException("User "+ user.getUserName() + " already exists");
         }
